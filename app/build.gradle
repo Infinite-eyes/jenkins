@@ -1,0 +1,84 @@
+apply plugin: 'com.android.application'
+
+
+
+
+def getDate() {
+    def data = new Date();
+    def formattedDate = date.format('yyyyMMddHHmm');
+
+}
+
+
+def verCode = 14
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.0"
+    signingConfigs{
+        signingConfig{
+            keyAlias 'xxx'
+            keyPassword 'xxx'
+            storeFile file('xxx')
+            storePassword 'xxx'
+        }
+    }
+
+
+    defaultConfig {
+        applicationId "com.example.jenkins"
+        minSdkVersion 15
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+    applicationVariants.all{variant ->
+        variant.outputs.each {output->
+            def newName
+            def timeNow
+            def oldFile = output.outputFile
+            def putDirectory = oldFile.parent
+
+            if("true".equals(IS_JENKINS)){
+                timeNow = JENLINS_TIME
+                outDirectory = '/home/jenkins/android'
+                newName = 'yj-android-v' +
+                        APP_VERSION + '-' + variant.productFlavors[0].name + timeNow + '-' +
+                        variant.buildType.name + '/apk'
+            }else{
+                timeNow = getDate();
+                if(variant.buildType.name.equals(debug)){
+                    newName = 'yj-android-v${APP_VERSION}-debug.apk'
+                }else{
+                    newName = 'yj-android-v'+
+                            APP_VERSION + '-' + variant.productFlavors[0].name + timeNow + '-' +
+                            variant.buildType.name + '.apk'
+                }
+            }
+            output.outputFile = new File(outDirectory, newName)
+        }
+
+    }
+
+
+
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:26.+'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    testCompile 'junit:junit:4.12'
+}
