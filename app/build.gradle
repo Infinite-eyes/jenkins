@@ -3,26 +3,26 @@ apply plugin: 'com.android.application'
 
 
 
-def getDate() {
-    def data = new Date();
-    def formattedDate = date.format('yyyyMMddHHmm');
-
-}
-
-
-def verCode = 14
+//def getDate() {
+//    def data = new Date();
+//    def formattedDate = date.format('yyyyMMddHHmm');
+//
+//}
+//
+//
+//def verCode = 14
 
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
-    signingConfigs{
-        signingConfig{
-            keyAlias 'xxx'
-            keyPassword 'xxx'
-            storeFile file('xxx')
-            storePassword 'xxx'
-        }
-    }
+//    signingConfigs{
+//        signingConfig{
+//            keyAlias 'xxx'
+//            keyPassword 'xxx'
+//            storeFile file('xxx')
+//            storePassword 'xxx'
+//        }
+//    }
 
 
     defaultConfig {
@@ -41,33 +41,33 @@ android {
     }
 
 
-    applicationVariants.all{variant ->
-        variant.outputs.each {output->
-            def newName
-            def timeNow
-            def oldFile = output.outputFile
-            def putDirectory = oldFile.parent
-
-            if("true".equals(IS_JENKINS)){
-                timeNow = JENLINS_TIME
-                outDirectory = '/home/jenkins/android'
-                newName = 'yj-android-v' +
-                        APP_VERSION + '-' + variant.productFlavors[0].name + timeNow + '-' +
-                        variant.buildType.name + '/apk'
-            }else{
-                timeNow = getDate();
-                if(variant.buildType.name.equals(debug)){
-                    newName = 'yj-android-v${APP_VERSION}-debug.apk'
-                }else{
-                    newName = 'yj-android-v'+
-                            APP_VERSION + '-' + variant.productFlavors[0].name + timeNow + '-' +
-                            variant.buildType.name + '.apk'
-                }
-            }
-            output.outputFile = new File(outDirectory, newName)
-        }
-
-    }
+//    applicationVariants.all{variant ->
+//        variant.outputs.each {output->
+//            def newName
+//            def timeNow
+//            def oldFile = output.outputFile
+//            def putDirectory = oldFile.parent
+//
+//            if("true".equals(IS_JENKINS)){
+//                timeNow = JENLINS_TIME
+//                outDirectory = '/home/jenkins/android'
+//                newName = 'yj-android-v' +
+//                        APP_VERSION + '-' + variant.productFlavors[0].name + timeNow + '-' +
+//                        variant.buildType.name + '/apk'
+//            }else{
+//                timeNow = getDate();
+//                if(variant.buildType.name.equals(debug)){
+//                    newName = 'yj-android-v${APP_VERSION}-debug.apk'
+//                }else{
+//                    newName = 'yj-android-v'+
+//                            APP_VERSION + '-' + variant.productFlavors[0].name + timeNow + '-' +
+//                            variant.buildType.name + '.apk'
+//                }
+//            }
+//            output.outputFile = new File(outDirectory, newName)
+//        }
+//
+//    }
 
 
 
